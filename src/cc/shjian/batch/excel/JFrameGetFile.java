@@ -55,36 +55,36 @@ public class JFrameGetFile extends JFrame {
 	List<DownloadData> dataList;
 	int downloadCount;
 	
-	int state = 0;//0=Î´Æô¶¯¡¢Í£Ö¹£¬1=ÏÂÔØÖĞ£¬2=ÔİÍ£
+	int state = 0;//0=æœªå¯åŠ¨ã€åœæ­¢ï¼Œ1=ä¸‹è½½ä¸­ï¼Œ2=æš‚åœ
 	
 	JFrameGetFile(){
 		
-		//ÉèÖÃ³ß´ç
+		//è®¾ç½®å°ºå¯¸
 		setSize(600, 620);
 		
-		//ÔÚÆÁÄ»¾ÓÖĞ
+		//åœ¨å±å¹•å±…ä¸­
 		setLocationRelativeTo(null);
 		
-		//¹Ì¶¨´°Ìå´óĞ¡
+		//å›ºå®šçª—ä½“å¤§å°
 		setResizable(false);
 		
-		//¹Ø±ÕÊ±µÄ²Ù×÷
+		//å…³é—­æ—¶çš„æ“ä½œ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-        initPanel();//³õÊ¼»¯Ãæ°å
+        initPanel();//åˆå§‹åŒ–é¢æ¿
         
         add(this.panel);
         
-        addLog("ÇëÑ¡ÔñÎÄ¼ş");
+        addLog("è¯·é€‰æ‹©æ–‡ä»¶");
 	}
 
 	private void initPanel() {
 		this.panel = new JPanel();
 		this.panel.setLayout(null);
 		
-		JLabel labelFile = new JLabel("µ¼ÈëÎÄ¼ş(Excel):");  
+		JLabel labelFile = new JLabel("å¯¼å…¥æ–‡ä»¶(Excel):");  
 		textfieldFile = new JTextField(10);
-		buttonFile = new JButton("Ñ¡Ôñ");
+		buttonFile = new JButton("é€‰æ‹©");
 		 
 		labelFile.setBounds(10,20,120,30);
 		textfieldFile.setBounds(120,20,400,30);
@@ -95,9 +95,9 @@ public class JFrameGetFile extends JFrame {
         this.panel.add(textfieldFile);
         this.panel.add(buttonFile);
         
-		JLabel labelOut = new JLabel("ÏÂÔØÎÄ¼şÖÁ:");  
+		JLabel labelOut = new JLabel("ä¸‹è½½æ–‡ä»¶è‡³:");  
 		textfieldOut = new JTextField(10);
-		buttonOut = new JButton("Ñ¡Ôñ");
+		buttonOut = new JButton("é€‰æ‹©");
 		 
 		labelOut.setBounds(10,60,120,30);
 		textfieldOut.setBounds(120,60,400,30);
@@ -108,15 +108,15 @@ public class JFrameGetFile extends JFrame {
         this.panel.add(textfieldOut);
         this.panel.add(buttonOut);
         
-        buttonRead = new JButton("¶ÁÈ¡ÎÄ¼ş");
+        buttonRead = new JButton("è¯»å–æ–‡ä»¶");
         buttonRead.setBounds(10,100, 570, 45);
         buttonRead.addActionListener(actionListener);
         this.panel.add(buttonRead);
         
         
-        JLabel labelDirName = new JLabel("ÎÄ¼ş¼ĞÃû³ÆÓÃµÚ");  
+        JLabel labelDirName = new JLabel("æ–‡ä»¶å¤¹åç§°ç”¨ç¬¬");  
         textfieldDirName = new JTextField(10);
-		JLabel labelDirName2 = new JLabel("ÁĞÃüÃû");  
+		JLabel labelDirName2 = new JLabel("åˆ—å‘½å");  
 		
 		labelDirName.setBounds(10,160,120,30);
 		textfieldDirName.setBounds(120,160,50,30);
@@ -127,9 +127,9 @@ public class JFrameGetFile extends JFrame {
         this.panel.add(textfieldDirName);
         this.panel.add(labelDirName2);
         
-        JLabel labelColIndex = new JLabel("ÏÂÔØµÚ");  
+        JLabel labelColIndex = new JLabel("ä¸‹è½½ç¬¬");  
         textfieldColIndex = new JTextField(10);
-		JLabel labelColIndex2 = new JLabel("ÁĞÎÄ¼ş£¨¶àÁĞÓÃ , ¸ô¿ª£©");  
+		JLabel labelColIndex2 = new JLabel("åˆ—æ–‡ä»¶ï¼ˆå¤šåˆ—ç”¨ , éš”å¼€ï¼‰");  
 		
 		labelColIndex.setBounds(10,200,120,30);
 		textfieldColIndex.setBounds(120,200,100,30);
@@ -140,13 +140,13 @@ public class JFrameGetFile extends JFrame {
         this.panel.add(textfieldColIndex);
         this.panel.add(labelColIndex2);
         
-        buttonDownload = new JButton("¿ªÊ¼Ö´ĞĞÏÂÔØ");
+        buttonDownload = new JButton("å¼€å§‹æ‰§è¡Œä¸‹è½½");
         buttonDownload.setBounds(10,240,570, 45);
         buttonDownload.setEnabled(false);
         buttonDownload.addActionListener(actionListener);
         this.panel.add(buttonDownload);
         
-        buttonStop = new JButton("Í£Ö¹");
+        buttonStop = new JButton("åœæ­¢");
         buttonStop.setBounds(10,240,570, 45);
         buttonStop.addActionListener(actionListener);
         this.panel.add(buttonStop);
@@ -174,11 +174,11 @@ public class JFrameGetFile extends JFrame {
 				}
 			}else if(e.getSource() == buttonRead){
 				if(selectFile == null){
-					showMessage("ÇëÑ¡ÔñÎÄ¼ş");
+					showMessage("è¯·é€‰æ‹©æ–‡ä»¶");
 					return;
 				}
 				if(selectOutDir == null){
-					showMessage("ÇëÑ¡ÔñÏÂÔØÄ¿Â¼");
+					showMessage("è¯·é€‰æ‹©ä¸‹è½½ç›®å½•");
 					return;
 				}
 				String nameIndexStr = textfieldDirName.getText();
@@ -198,30 +198,30 @@ public class JFrameGetFile extends JFrame {
 							DownloadData d = dataList.get(i);
 							taskCount++;
 							if(d.dirName==null || d.dirName.isEmpty()){
-								showMessage("µÚ"+(i+1)+"¸öÈÎÎñ£¬ÎÄ¼ş¼ĞÃû³ÆÁĞÓĞÊı¾İ´íÎó£¬Çë¼ì²éÊÇ·ñÎª¿Õ");
+								showMessage("ç¬¬"+(i+1)+"ä¸ªä»»åŠ¡ï¼Œæ–‡ä»¶å¤¹åç§°åˆ—æœ‰æ•°æ®é”™è¯¯ï¼Œè¯·æ£€æŸ¥æ˜¯å¦ä¸ºç©º");
 								return;
 							}
 							for (String src : d.srcList) {
 								downloadCount++;
 								if(!src.contains("http")){
-									showMessage("µÚ"+(i+1)+"¸öÈÎÎñ£¬Êı¾İ´íÎó£¬Çë¼ì²é¶ÔÓ¦ÏÂÔØµÄÁĞÊÇ·ñ°üº¬http");
+									showMessage("ç¬¬"+(i+1)+"ä¸ªä»»åŠ¡ï¼Œæ•°æ®é”™è¯¯ï¼Œè¯·æ£€æŸ¥å¯¹åº”ä¸‹è½½çš„åˆ—æ˜¯å¦åŒ…å«http");
 									return;
 								}
 							}
 						}
 						if(downloadCount > 0){
 							buttonDownload.setEnabled(true);
-							addLog("¶ÁÈ¡µ½ÁË"+taskCount+"ÈÎÎñ,ĞèÒªÏÂÔØ"+downloadCount+"¸öÎÄ¼ş");
+							addLog("è¯»å–åˆ°äº†"+taskCount+"ä»»åŠ¡,éœ€è¦ä¸‹è½½"+downloadCount+"ä¸ªæ–‡ä»¶");
 						}else{
-							showMessage("¶ÁÈ¡µ½µÄÏÂÔØÈÎÎñÎª0");
+							showMessage("è¯»å–åˆ°çš„ä¸‹è½½ä»»åŠ¡ä¸º0");
 						}
 					} catch (Exception e2) {
 						e2.printStackTrace();
-						showMessage("ÏÂÔØÁĞÇëÊäÈëÊı×Ö¸ñÊ½£¬¶à¸öÓÃ,·Ö¸ô");
+						showMessage("ä¸‹è½½åˆ—è¯·è¾“å…¥æ•°å­—æ ¼å¼ï¼Œå¤šä¸ªç”¨,åˆ†éš”");
 					}
 				} catch (Exception e2) {
 					e2.printStackTrace();
-					showMessage("ÎÄ¼ş¼ĞÃû³ÆÁĞÇëÊäÈëÊı×Ö¸ñÊ½");
+					showMessage("æ–‡ä»¶å¤¹åç§°åˆ—è¯·è¾“å…¥æ•°å­—æ ¼å¼");
 				}
 				
 			}else if(e.getSource() == buttonDownload){
@@ -237,7 +237,7 @@ public class JFrameGetFile extends JFrame {
 					};
 				}.start();
 			}else if(e.getSource() == buttonStop){
-				int result = JOptionPane.showConfirmDialog(null, "Í£Ö¹ºóÏÂ´ÎÏÂÔØ»á´ÓÍ·¿ªÊ¼£¬È·¶¨ÒªÍ£Ö¹Âğ?", "¾¯¸æ",JOptionPane.YES_NO_OPTION);  
+				int result = JOptionPane.showConfirmDialog(null, "åœæ­¢åä¸‹æ¬¡ä¸‹è½½ä¼šä»å¤´å¼€å§‹ï¼Œç¡®å®šè¦åœæ­¢å—?", "è­¦å‘Š",JOptionPane.YES_NO_OPTION);  
 				if(result == 0){
 					state = 0;
 				}
@@ -250,26 +250,26 @@ public class JFrameGetFile extends JFrame {
 		state = 1;
 		for (DownloadData d : dataList) {
 			for(int i=0;i<d.srcList.size();i++){
-				//Í£Ö¹
+				//åœæ­¢
 				if(state == 0){
-					addLog("Í£Ö¹ÏÂÔØ");
+					addLog("åœæ­¢ä¸‹è½½");
 					downloadEnd();
 					return;
 				}
 				String src = d.srcList.get(i);
-				addLog("("+downloadCount+"/"+(tempIndex+1)+")¿ªÊ¼ÏÂÔØ");
+				addLog("("+downloadCount+"/"+(tempIndex+1)+")å¼€å§‹ä¸‹è½½");
 				String fileName = src.substring(src.lastIndexOf('/')+1);  
 				String downDirPath = selectOutDir.getAbsolutePath()+File.separator+d.dirName;
 				boolean success = downLoadFromUrl(src,fileName,downDirPath);
 				if(success){
-					addLog("ÏÂÔØ³É¹¦SUCCESS");
+					addLog("ä¸‹è½½æˆåŠŸSUCCESS");
 				}else{
-					addLog("ÏÂÔØÊ§°ÜERROR");
+					addLog("ä¸‹è½½å¤±è´¥ERROR");
 				}
 				tempIndex++;
 			}
 		}
-		showMessage("ÏÂÔØ½áÊø");
+		showMessage("ä¸‹è½½ç»“æŸ");
 		downloadEnd();
 	}
 	public void downloadEnd(){
@@ -296,9 +296,9 @@ public class JFrameGetFile extends JFrame {
 
     public File openChoseFile(){
         JFileChooser fileChooser = new JFileChooser();  
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("xlsxÎÄ¼ş", "xlsx");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("xlsxæ–‡ä»¶", "xlsx");
         fileChooser.setFileFilter(filter);  
-        fileChooser.showDialog(new JLabel(), "Ñ¡Ôñ");  
+        fileChooser.showDialog(new JLabel(), "é€‰æ‹©");  
         File file = fileChooser.getSelectedFile();
         return file;
     }
@@ -306,13 +306,13 @@ public class JFrameGetFile extends JFrame {
     public File openChoseDir(){
         JFileChooser fileChooser = new JFileChooser();  
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fileChooser.showDialog(new JLabel(), "Ñ¡Ôñ");  
+        fileChooser.showDialog(new JLabel(), "é€‰æ‹©");  
         File file = fileChooser.getSelectedFile();
         return file;
     }
     
     public void showMessage(String message){
-    	JOptionPane.showMessageDialog(null, message, "ÌáÊ¾", JOptionPane.INFORMATION_MESSAGE);
+    	JOptionPane.showMessageDialog(null, message, "æç¤º", JOptionPane.INFORMATION_MESSAGE);
     }
     
     public List<DownloadData> readExcelData(File file,Integer nameIndex,List<Integer> colList) throws Exception {
@@ -359,15 +359,15 @@ public class JFrameGetFile extends JFrame {
     	try{
     		URL url = new URL(urlStr);    
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
-            //ÉèÖÃ³¬Ê±¼äÎª3Ãë  
+            //è®¾ç½®è¶…æ—¶é—´ä¸º3ç§’  
             conn.setConnectTimeout(3*1000);  
-            //·ÀÖ¹ÆÁ±Î³ÌĞò×¥È¡¶ø·µ»Ø403´íÎó  
+            //é˜²æ­¢å±è”½ç¨‹åºæŠ“å–è€Œè¿”å›403é”™è¯¯  
             conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");  
-            //µÃµ½ÊäÈëÁ÷  
+            //å¾—åˆ°è¾“å…¥æµ  
             InputStream inputStream = conn.getInputStream();    
-            //»ñÈ¡×Ô¼ºÊı×é  
+            //è·å–è‡ªå·±æ•°ç»„  
             byte[] getData = readInputStream(inputStream);     
-            //ÎÄ¼ş±£´æÎ»ÖÃ  
+            //æ–‡ä»¶ä¿å­˜ä½ç½®  
             File saveDir = new File(savePath);  
             if(!saveDir.exists()){  
                 saveDir.mkdirs();  

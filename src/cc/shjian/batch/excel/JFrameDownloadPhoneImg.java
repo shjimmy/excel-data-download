@@ -40,360 +40,385 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import sun.rmi.runtime.Log;
 
 public class JFrameDownloadPhoneImg extends JFrame {
-	
+
 	JPanel panel;
-	
+
 	LinkedList<String> logList = new LinkedList<String>();
-	
-	JButton buttonFile,buttonOut;
+
+	JButton buttonFile, buttonOut;
 	JButton buttonRead;
-	JButton buttonDownload,buttonStop;
+	JButton buttonDownload, buttonStop;
 	JTextArea textareaLog;
-	
-	JTextField textfieldFile,textfieldOut;
+
+	JTextField textfieldFile, textfieldOut;
 	JTextField textfieldDirName;
-	//JTextField textfieldColIndex;
-	
+	// JTextField textfieldColIndex;
+
 	File selectFile;
 	File selectOutDir;
 	List<DownloadData> dataList;
 	int downloadCount;
-	
-	int state = 0;//0=Î´Æô¶¯¡¢Í£Ö¹£¬1=ÏÂÔØÖĞ£¬2=ÔİÍ£
-	
-	JFrameDownloadPhoneImg(){
-		
-		//ÉèÖÃ³ß´ç
+
+	int state = 0;// 0=æœªå¯åŠ¨ã€åœæ­¢ï¼Œ1=ä¸‹è½½ä¸­ï¼Œ2=æš‚åœ
+
+	JFrameDownloadPhoneImg() {
+
+		// è®¾ç½®å°ºå¯¸
 		setSize(600, 620);
-		
-		//ÔÚÆÁÄ»¾ÓÖĞ
+
+		// åœ¨å±å¹•å±…ä¸­
 		setLocationRelativeTo(null);
-		
-		//¹Ì¶¨´°Ìå´óĞ¡
+
+		// å›ºå®šçª—ä½“å¤§å°
 		setResizable(false);
-		
-		//¹Ø±ÕÊ±µÄ²Ù×÷
+
+		// å…³é—­æ—¶çš„æ“ä½œ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-        initPanel();//³õÊ¼»¯Ãæ°å
-        
-        add(this.panel);
-        
-        addLog("ÇëÑ¡ÔñÎÄ¼ş");
+
+		initPanel();// åˆå§‹åŒ–é¢æ¿
+
+		add(this.panel);
+
+		addLog("è¯·é€‰æ‹©æ–‡ä»¶");
 	}
 
 	private void initPanel() {
 		this.panel = new JPanel();
 		this.panel.setLayout(null);
-		
-		JLabel labelFile = new JLabel("µ¼ÈëÎÄ¼ş(Excel):");  
+
+		JLabel labelFile = new JLabel("å¯¼å…¥æ–‡ä»¶(Excel):");
 		textfieldFile = new JTextField(10);
-		buttonFile = new JButton("Ñ¡Ôñ");
-		 
-		labelFile.setBounds(10,20,120,30);
-		textfieldFile.setBounds(120,20,400,30);
-		buttonFile.setBounds(520,20,50, 30);
+		buttonFile = new JButton("é€‰æ‹©");
+
+		labelFile.setBounds(10, 20, 120, 30);
+		textfieldFile.setBounds(120, 20, 400, 30);
+		buttonFile.setBounds(520, 20, 50, 30);
 		textfieldFile.setEditable(false);
 		buttonFile.addActionListener(actionListener);
-        this.panel.add(labelFile);
-        this.panel.add(textfieldFile);
-        this.panel.add(buttonFile);
-        
-		JLabel labelOut = new JLabel("ÏÂÔØÎÄ¼şÖÁ:");  
+		this.panel.add(labelFile);
+		this.panel.add(textfieldFile);
+		this.panel.add(buttonFile);
+
+		JLabel labelOut = new JLabel("ä¸‹è½½æ–‡ä»¶è‡³:");
 		textfieldOut = new JTextField(10);
-		buttonOut = new JButton("Ñ¡Ôñ");
-		 
-		labelOut.setBounds(10,60,120,30);
-		textfieldOut.setBounds(120,60,400,30);
-		buttonOut.setBounds(520,60,50, 30);
+		buttonOut = new JButton("é€‰æ‹©");
+
+		labelOut.setBounds(10, 60, 120, 30);
+		textfieldOut.setBounds(120, 60, 400, 30);
+		buttonOut.setBounds(520, 60, 50, 30);
 		textfieldOut.setEditable(false);
 		buttonOut.addActionListener(actionListener);
-        this.panel.add(labelOut);
-        this.panel.add(textfieldOut);
-        this.panel.add(buttonOut);
-        
-        buttonRead = new JButton("¶ÁÈ¡ÎÄ¼ş");
-        buttonRead.setBounds(10,100, 570, 45);
-        buttonRead.addActionListener(actionListener);
-        this.panel.add(buttonRead);
-        
-        
-        JLabel labelDirName = new JLabel("ÎÄ¼ş¼ĞÃû³ÆÓÃµÚ");  
-        textfieldDirName = new JTextField(10);
-		JLabel labelDirName2 = new JLabel("ÁĞÃüÃû");  
-		
-		labelDirName.setBounds(10,160,120,30);
-		textfieldDirName.setBounds(120,160,50,30);
-		labelDirName2.setBounds(180,160,120,30);
-		textfieldDirName.setText(1+"");
-		
+		this.panel.add(labelOut);
+		this.panel.add(textfieldOut);
+		this.panel.add(buttonOut);
+
+		buttonRead = new JButton("è¯»å–æ–‡ä»¶");
+		buttonRead.setBounds(10, 100, 570, 45);
+		buttonRead.addActionListener(actionListener);
+		this.panel.add(buttonRead);
+
+		JLabel labelDirName = new JLabel("æ–‡ä»¶å¤¹åç§°ç”¨ç¬¬");
+		textfieldDirName = new JTextField(10);
+		JLabel labelDirName2 = new JLabel("åˆ—å‘½å");
+
+		labelDirName.setBounds(10, 160, 120, 30);
+		textfieldDirName.setBounds(120, 160, 50, 30);
+		labelDirName2.setBounds(180, 160, 120, 30);
+		textfieldDirName.setText(1 + "");
+
 		this.panel.add(labelDirName);
-        this.panel.add(textfieldDirName);
-        this.panel.add(labelDirName2);
-        
-//        JLabel labelColIndex = new JLabel("ÏÂÔØµÚ");  
-//        textfieldColIndex = new JTextField(10);
-//		JLabel labelColIndex2 = new JLabel("ÁĞÎÄ¼ş£¨¶àÁĞÓÃ , ¸ô¿ª£©");  
-//		
-//		labelColIndex.setBounds(10,200,120,30);
-//		textfieldColIndex.setBounds(120,200,100,30);
-//		labelColIndex2.setBounds(230,200,200,30);
-//		textfieldColIndex.setText(16+","+17+","+18);
-//		
-//		this.panel.add(labelColIndex);
-//        this.panel.add(textfieldColIndex);
-//        this.panel.add(labelColIndex2);
-        
-        buttonDownload = new JButton("¿ªÊ¼Ö´ĞĞÏÂÔØ");
-        buttonDownload.setBounds(10,200,570, 45);
-        buttonDownload.setEnabled(false);
-        buttonDownload.addActionListener(actionListener);
-        this.panel.add(buttonDownload);
-        
-        buttonStop = new JButton("Í£Ö¹");
-        buttonStop.setBounds(10,200,570, 45);
-        buttonStop.addActionListener(actionListener);
-        this.panel.add(buttonStop);
-        
-        this.textareaLog = new JTextArea();
-        textareaLog.setBounds(10,255,570,300);
-        textareaLog.setEditable(false);
-        this.panel.add(textareaLog);
+		this.panel.add(textfieldDirName);
+		this.panel.add(labelDirName2);
+
+		// JLabel labelColIndex = new JLabel("ä¸‹è½½ç¬¬");
+		// textfieldColIndex = new JTextField(10);
+		// JLabel labelColIndex2 = new JLabel("åˆ—æ–‡ä»¶ï¼ˆå¤šåˆ—ç”¨ , éš”å¼€ï¼‰");
+		//
+		// labelColIndex.setBounds(10,200,120,30);
+		// textfieldColIndex.setBounds(120,200,100,30);
+		// labelColIndex2.setBounds(230,200,200,30);
+		// textfieldColIndex.setText(16+","+17+","+18);
+		//
+		// this.panel.add(labelColIndex);
+		// this.panel.add(textfieldColIndex);
+		// this.panel.add(labelColIndex2);
+
+		buttonDownload = new JButton("å¼€å§‹æ‰§è¡Œä¸‹è½½");
+		buttonDownload.setBounds(10, 200, 570, 45);
+		buttonDownload.setEnabled(false);
+		buttonDownload.addActionListener(actionListener);
+		this.panel.add(buttonDownload);
+
+		buttonStop = new JButton("åœæ­¢");
+		buttonStop.setBounds(10, 200, 570, 45);
+		buttonStop.addActionListener(actionListener);
+		buttonStop.setVisible(false);
+		this.panel.add(buttonStop);
+
+		this.textareaLog = new JTextArea();
+		textareaLog.setBounds(10, 255, 570, 300);
+		textareaLog.setEditable(false);
+		this.panel.add(textareaLog);
 	}
-	
+
 	ActionListener actionListener = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == buttonFile){
+			if (e.getSource() == buttonFile) {
 				selectFile = openChoseFile();
-				if(selectFile != null){
+				if (selectFile != null) {
 					textfieldFile.setText(selectFile.getAbsolutePath());
 				}
-			}else if(e.getSource() == buttonOut){
+			} else if (e.getSource() == buttonOut) {
 				selectOutDir = openChoseDir();
-				if(selectOutDir != null){
+				if (selectOutDir != null) {
 					String path = selectOutDir.getAbsolutePath();
-					selectOutDir = new File(path,"phone-data");
+					selectOutDir = new File(path, "phone-data");
 					textfieldOut.setText(selectOutDir.getAbsolutePath());
 				}
-			}else if(e.getSource() == buttonRead){
-				if(selectFile == null){
-					showMessage("ÇëÑ¡ÔñÎÄ¼ş");
+			} else if (e.getSource() == buttonRead) {
+				if (selectFile == null) {
+					showMessage("è¯·é€‰æ‹©æ–‡ä»¶");
 					return;
 				}
-				if(selectOutDir == null){
-					showMessage("ÇëÑ¡ÔñÏÂÔØÄ¿Â¼");
+				if (selectOutDir == null) {
+					showMessage("è¯·é€‰æ‹©ä¸‹è½½ç›®å½•");
 					return;
 				}
 				String nameIndexStr = textfieldDirName.getText();
 				try {
 					int nameIndex = Integer.parseInt(nameIndexStr);
-					//String colIndexStr = textfieldColIndex.getText();
+					// String colIndexStr = textfieldColIndex.getText();
 					try {
-//						String[] colStrList = colIndexStr.split(",");
-//						List<Integer> colList = new ArrayList<Integer>();
-//						for (String str : colStrList) {
-//							colList.add(Integer.parseInt(str));
-//						}
-						dataList = readExcelData(selectFile,nameIndex);
+						// String[] colStrList = colIndexStr.split(",");
+						// List<Integer> colList = new ArrayList<Integer>();
+						// for (String str : colStrList) {
+						// colList.add(Integer.parseInt(str));
+						// }
+						dataList = readExcelData(selectFile, nameIndex);
 						int taskCount = 0;
 						downloadCount = 0;
-						for (int i=0;i<dataList.size();i++) {
+						for (int i = 0; i < dataList.size(); i++) {
 							DownloadData d = dataList.get(i);
 							taskCount++;
 							for (String src : d.srcList) {
 								downloadCount++;
 							}
 						}
-						if(downloadCount > 0){
+						if (downloadCount > 0) {
 							buttonDownload.setEnabled(true);
-							addLog("¶ÁÈ¡µ½ÁË"+taskCount+"ÈÎÎñ,ĞèÒªÏÂÔØ"+downloadCount+"¸öÎÄ¼ş");
-						}else{
-							showMessage("¶ÁÈ¡µ½µÄÏÂÔØÈÎÎñÎª0");
+							addLog("è¯»å–åˆ°äº†" + taskCount + "ä»»åŠ¡,éœ€è¦ä¸‹è½½" + downloadCount + "ä¸ªæ–‡ä»¶");
+						} else {
+							showMessage("è¯»å–åˆ°çš„ä¸‹è½½ä»»åŠ¡ä¸º0");
 						}
 					} catch (Exception e2) {
 						e2.printStackTrace();
-						showMessage("ÏÂÔØÁĞÇëÊäÈëÊı×Ö¸ñÊ½£¬¶à¸öÓÃ,·Ö¸ô");
+						showMessage("ä¸‹è½½åˆ—è¯·è¾“å…¥æ•°å­—æ ¼å¼ï¼Œå¤šä¸ªç”¨,åˆ†éš”");
 					}
 				} catch (Exception e2) {
 					e2.printStackTrace();
-					showMessage("ÎÄ¼ş¼ĞÃû³ÆÁĞÇëÊäÈëÊı×Ö¸ñÊ½");
+					showMessage("æ–‡ä»¶å¤¹åç§°åˆ—è¯·è¾“å…¥æ•°å­—æ ¼å¼");
 				}
-				
-			}else if(e.getSource() == buttonDownload){
+
+			} else if (e.getSource() == buttonDownload) {
 				buttonFile.setEnabled(false);
 				buttonRead.setEnabled(false);
-				
+
 				buttonDownload.setVisible(false);
 				buttonStop.setVisible(true);
-				
-				new Thread(){
+
+				new Thread() {
 					public void run() {
 						startDownload();
 					};
 				}.start();
-			}else if(e.getSource() == buttonStop){
-				int result = JOptionPane.showConfirmDialog(null, "Í£Ö¹ºóÏÂ´ÎÏÂÔØ»á´ÓÍ·¿ªÊ¼£¬È·¶¨ÒªÍ£Ö¹Âğ?", "¾¯¸æ",JOptionPane.YES_NO_OPTION);  
-				if(result == 0){
+			} else if (e.getSource() == buttonStop) {
+				int result = JOptionPane.showConfirmDialog(null, "åœæ­¢åä¸‹æ¬¡ä¸‹è½½ä¼šä»å¤´å¼€å§‹ï¼Œç¡®å®šè¦åœæ­¢å—?", "è­¦å‘Š",
+						JOptionPane.YES_NO_OPTION);
+				if (result == 0) {
 					state = 0;
 				}
 			}
 		}
 	};
-	
-	public void startDownload(){
+
+	public void startDownload() {
 		int tempIndex = 0;
 		state = 1;
 		for (DownloadData d : dataList) {
-			for(int i=0;i<d.srcList.size();i++){
-				//Í£Ö¹
-				if(state == 0){
-					addLog("Í£Ö¹ÏÂÔØ");
+			for (int i = 0; i < d.srcList.size(); i++) {
+				// åœæ­¢
+				if (state == 0) {
+					addLog("åœæ­¢ä¸‹è½½");
 					downloadEnd();
 					return;
 				}
 				String src = d.srcList.get(i);
-				addLog("("+downloadCount+"/"+(tempIndex+1)+")¿ªÊ¼ÏÂÔØ");
-				String fileName = src.substring(src.lastIndexOf('/')+1);  
-				String downDirPath = selectOutDir.getAbsolutePath()+File.separator+d.phone;
-				boolean success = downLoadFromUrl(src,fileName,downDirPath);
-				if(success){
-					addLog("ÏÂÔØ³É¹¦SUCCESS£¬"+d.phone);
-				}else{
-					addLog("ÏÂÔØÊ§°ÜERROR£¬"+d.phone);
+				addLog("(" + downloadCount + "/" + (tempIndex + 1) + ")å¼€å§‹ä¸‹è½½");
+				String fileName = src.substring(src.lastIndexOf('/') + 1);
+				String downDirPath = selectOutDir.getAbsolutePath() + File.separator + d.phone;
+				boolean success = downLoadFromUrl(src, fileName, downDirPath);
+				if (success) {
+					addLog("ä¸‹è½½æˆåŠŸSUCCESSï¼Œ" + d.phone);
+				} else {
+					
+					String retrySrc1 = null;
+					String retrySrc2 = null;
+					
+					if(src.lastIndexOf("-") != -1) {
+						int subIndex = src.lastIndexOf("-");
+						retrySrc1 = src.substring(0, subIndex) + "%09-" + src.substring(subIndex+1);
+						retrySrc2 = src.substring(0, subIndex) + "%20-" + src.substring(subIndex+1);
+					}
+					
+					if(retrySrc1 != null && retrySrc2 != null) {
+						addLog("å°è¯•ä¸‹è½½ç¬¬äºŒæ¬¡");
+						boolean success2 = downLoadFromUrl(retrySrc1, fileName, downDirPath);
+						if(success2) {
+							addLog("ç¬¬äºŒæ¬¡ä¸‹è½½æˆåŠŸSUCCESSï¼Œ" + d.phone);
+						}else {
+							addLog("å°è¯•ä¸‹è½½ç¬¬ä¸‰æ¬¡");
+							boolean success3 = downLoadFromUrl(retrySrc2, fileName, downDirPath);
+							if(success3) {
+								addLog("ç¬¬ä¸‰æ¬¡ä¸‹è½½æˆåŠŸSUCCESSï¼Œ" + d.phone);
+							}else {
+								addLog("ç¬¬ä¸‰æ¬¡ä¸‹è½½å¤±è´¥," + d.phone);
+							}
+						}
+					}else {
+						addLog("ä¸‹è½½å¤±è´¥," + d.phone);
+					}
 				}
 				tempIndex++;
 			}
 		}
-		showMessage("ÏÂÔØÍê³É");
+		showMessage("ä¸‹è½½å®Œæˆ");
 		downloadEnd();
 	}
-	public void downloadEnd(){
+
+	public void downloadEnd() {
 		buttonFile.setEnabled(true);
 		buttonRead.setEnabled(true);
 		buttonDownload.setVisible(true);
 		buttonStop.setVisible(false);
 	}
-	
-	public void addLog(String log){
+
+	public void addLog(String log) {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		String dateStr = sdf.format(new Date());
-		logList.addFirst(dateStr+"--"+log);
-		if(logList.size() > 500){
+		logList.addFirst(dateStr + "--" + log);
+		if (logList.size() > 500) {
 			logList.removeLast();
 		}
 		StringBuffer sb = new StringBuffer();
 		for (String str : logList) {
-			sb.append(str+"\n");
+			sb.append(str + "\n");
 		}
 		this.textareaLog.setText(sb.toString());
 	}
-	
 
-    public File openChoseFile(){
-        JFileChooser fileChooser = new JFileChooser();  
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("xlsÎÄ¼ş", "xls");
-        fileChooser.setFileFilter(filter);  
-        fileChooser.showDialog(new JLabel(), "Ñ¡Ôñ");  
-        File file = fileChooser.getSelectedFile();
-        return file;
-    }
-    
-    public File openChoseDir(){
-        JFileChooser fileChooser = new JFileChooser();  
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fileChooser.showDialog(new JLabel(), "Ñ¡Ôñ");  
-        File file = fileChooser.getSelectedFile();
-        return file;
-    }
-    
-    public void showMessage(String message){
-    	JOptionPane.showMessageDialog(null, message, "ÌáÊ¾", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    public List<DownloadData> readExcelData(File file,Integer nameIndex) throws Exception {
-    	List<DownloadData> rowList = new ArrayList<DownloadData>();
-    	
-    	HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
+	public File openChoseFile() {
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("xlsæ–‡ä»¶", "xls");
+		fileChooser.setFileFilter(filter);
+		fileChooser.showDialog(new JLabel(), "é€‰æ‹©");
+		File file = fileChooser.getSelectedFile();
+		return file;
+	}
+
+	public File openChoseDir() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.showDialog(new JLabel(), "é€‰æ‹©");
+		File file = fileChooser.getSelectedFile();
+		return file;
+	}
+
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message, "æç¤º", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public List<DownloadData> readExcelData(File file, Integer nameIndex) throws Exception {
+		List<DownloadData> rowList = new ArrayList<DownloadData>();
+
+		HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
 		HSSFSheet sheet = wb.getSheetAt(0);
 		int lastRowNum = sheet.getLastRowNum();
-		
-		for(int i=0;i<=lastRowNum;i++){
+
+		for (int i = 0; i <= lastRowNum; i++) {
 			HSSFRow rowData = sheet.getRow(i);
-			Cell dirNameCell = rowData.getCell(nameIndex-1);
-			if(dirNameCell != null){
-				
+			Cell dirNameCell = rowData.getCell(nameIndex - 1);
+			if (dirNameCell != null) {
+
 				dirNameCell.setCellType(Cell.CELL_TYPE_STRING);
 				String phone = dirNameCell.getStringCellValue();
-				
-				if(phone != null && !phone.equals("")){
+
+				if (phone != null && !phone.equals("")) {
 					DownloadData downloadData = new DownloadData();
 					downloadData.phone = phone;
-					
+
 					List<String> srcList = new ArrayList<String>();
-					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/"+phone+"-1.png");
-					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/"+phone+"-2.png");
-					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/"+phone+"-3.png");
-					
+					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/" + phone + "-1.png");
+					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/" + phone + "-2.png");
+					srcList.add("https://realname.oss-cn-beijing.aliyuncs.com/images/userCardNo/" + phone + "-3.png");
+
 					downloadData.srcList = srcList;
 					rowList.add(downloadData);
 				}
 			}
-			
-		}
-    	
-    	return rowList;
-    }
-    
-    
-    public class DownloadData{
-    	public String phone;
-    	public List<String> srcList;
-    }
-    
-    public boolean downLoadFromUrl(String urlStr,String fileName,String savePath){  
-    	try{
-    		URL url = new URL(urlStr);    
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
-            //ÉèÖÃ³¬Ê±¼äÎª3Ãë  
-            conn.setConnectTimeout(3*1000);  
-            //·ÀÖ¹ÆÁ±Î³ÌĞò×¥È¡¶ø·µ»Ø403´íÎó  
-            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");  
-            //µÃµ½ÊäÈëÁ÷  
-            InputStream inputStream = conn.getInputStream();    
-            //»ñÈ¡×Ô¼ºÊı×é  
-            byte[] getData = readInputStream(inputStream);     
-            //ÎÄ¼ş±£´æÎ»ÖÃ  
-            File saveDir = new File(savePath);  
-            if(!saveDir.exists()){  
-                saveDir.mkdirs();  
-            }  
-            File file = new File(saveDir+File.separator+fileName);      
-            FileOutputStream fos = new FileOutputStream(file);    
-            fos.write(getData);   
-            if(fos!=null){  
-                fos.close();    
-            }  
-            if(inputStream!=null){  
-                inputStream.close();  
-            }  
-            return true;
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
-    	return false;  
-    }  
-    
-    public byte[] readInputStream(InputStream inputStream) throws IOException {    
-        byte[] buffer = new byte[1024];    
-        int len = 0;    
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();    
-        while((len = inputStream.read(buffer)) != -1) {    
-            bos.write(buffer, 0, len);    
-        }    
-        bos.close();    
-        return bos.toByteArray();    
-    }   
 
+		}
+
+		return rowList;
+	}
+
+	public class DownloadData {
+		public String phone;
+		public List<String> srcList;
+	}
+
+	public boolean downLoadFromUrl(String urlStr, String fileName, String savePath) {
+		try {
+			URL url = new URL(urlStr);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// è®¾ç½®è¶…æ—¶é—´ä¸º3ç§’
+			conn.setConnectTimeout(3 * 1000);
+			// é˜²æ­¢å±è”½ç¨‹åºæŠ“å–è€Œè¿”å›403é”™è¯¯
+			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+			// å¾—åˆ°è¾“å…¥æµ
+			InputStream inputStream = conn.getInputStream();
+			// è·å–è‡ªå·±æ•°ç»„
+			byte[] getData = readInputStream(inputStream);
+			// æ–‡ä»¶ä¿å­˜ä½ç½®
+			File saveDir = new File(savePath);
+			if (!saveDir.exists()) {
+				saveDir.mkdirs();
+			}
+			File file = new File(saveDir + File.separator + fileName);
+			FileOutputStream fos = new FileOutputStream(file);
+			fos.write(getData);
+			if (fos != null) {
+				fos.close();
+			}
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public byte[] readInputStream(InputStream inputStream) throws IOException {
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		while ((len = inputStream.read(buffer)) != -1) {
+			bos.write(buffer, 0, len);
+		}
+		bos.close();
+		return bos.toByteArray();
+	}
 
 }
